@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="images/leo.jpg">
+  <title>graphQL基础 | さくら荘のLeo  </title>
+  <meta name="author" content="Leo" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="graphQL" />
+  
+  <meta name="description" content="3. 使用express和graphQL1 查询 (server-side)Query 是一个关键字，代表一个操作类型 (operation type)。 所有查询的方法都必须在这个字段下， 123456EXAMPLEtype Query &amp;#123;	查询方法1: 返回值，  查询方法2： 返回值，	....&amp;#125;  返回值如果不是graphql的自带标量类型，那么就需要使用type来定义">
+<meta property="og:type" content="article">
+<meta property="og:title" content="graphQL基础">
+<meta property="og:url" content="https://www.yinjia-li.com/2021/05/25/graphQL%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="さくら荘のLeo  ">
+<meta property="og:description" content="3. 使用express和graphQL1 查询 (server-side)Query 是一个关键字，代表一个操作类型 (operation type)。 所有查询的方法都必须在这个字段下， 123456EXAMPLEtype Query &amp;#123;	查询方法1: 返回值，  查询方法2： 返回值，	....&amp;#125;  返回值如果不是graphql的自带标量类型，那么就需要使用type来定义">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.yinjia-li.com/images/leo.jpg">
+<meta property="article:published_time" content="2021-05-25T11:36:40.000Z">
+<meta property="article:modified_time" content="2021-05-25T11:37:52.730Z">
+<meta property="article:author" content="Leo">
+<meta property="article:tag" content="graphQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.yinjia-li.com/images/leo.jpg">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/light.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-file"></i>档案馆</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-paw"></i>好伙伴</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>链接</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="https://www.yinjia-li.com">关于我</a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://github.com/DreamingLi">我的github</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">さくら荘のLeo  </a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>さくら荘のLeo  </h2> <br />
+                        <span>啊嘞嘞</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+                        
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/violet_evergarden.jpg" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">一个喜欢二次元的编程菜鸟</p>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E4%BD%BF%E7%94%A8express%E5%92%8CgraphQL"><span class="toc-text">3. 使用express和graphQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%9F%A5%E8%AF%A2-server-side"><span class="toc-text">1 查询 (server-side)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E8%87%AA%E5%B8%A6%E6%A0%87%E9%87%8F%E7%B1%BB%E5%9E%8B"><span class="toc-text">1.1 自带标量类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E5%A4%8D%E6%9D%82-%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B"><span class="toc-text">1.2 复杂&#x2F;自定义类型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%A4%84%E7%90%86%E5%87%BD%E6%95%B0"><span class="toc-text">2. 处理函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%90%8E%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA"><span class="toc-text">3. 后端服务器搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%8C%85%E5%AF%BC%E5%85%A5"><span class="toc-text">3.1 包导入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-buildSchame"><span class="toc-text">3.2 buildSchame</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E5%A4%84%E7%90%86%E5%87%BD%E6%95%B0"><span class="toc-text">3.3 处理函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E6%B5%8B%E8%AF%95"><span class="toc-text">4 测试</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/graphQL-basic/">graphQL-basic</a><span class="category-list-count">1</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/graphQL/" style="font-size: 0.6em;">graphQL</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2021/05/25/graphQL%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> graphQL基础</a>
+            
+          
+        
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+                    
+
+        <section class="col-md-8">
+    <article>
+        <div class="kratos-hentry kratos-post-inner clearfix">
+            <header class="kratos-entry-header">
+                
+                    <h1 class="kratos-entry-title text-center">graphQL基础</h1>
+                
+                
+                <ul class="kratos-post-meta text-center">
+                    <li><i class="fa fa-calendar"></i> 2021-05-25</li>
+                    <li><i class="fa fa-user"></i> 作者 Leo</li>
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~3.31K
+                        
+                        字
+                    </li>
+                    
+                </ul>
+            </header>
+            <div class="kratos-post-content">
+                <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                    本文最后编辑于 <time datetime="1621942672730"></time> 前，其中的内容可能需要更新。
+                </div>
+                
+                    <div class="kratos-post-inner-toc">
+                        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E4%BD%BF%E7%94%A8express%E5%92%8CgraphQL"><span class="toc-number">1.</span> <span class="toc-text">3. 使用express和graphQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%9F%A5%E8%AF%A2-server-side"><span class="toc-number">2.</span> <span class="toc-text">1 查询 (server-side)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E8%87%AA%E5%B8%A6%E6%A0%87%E9%87%8F%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 自带标量类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E5%A4%8D%E6%9D%82-%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 复杂&#x2F;自定义类型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%A4%84%E7%90%86%E5%87%BD%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">2. 处理函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%90%8E%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA"><span class="toc-number">4.</span> <span class="toc-text">3. 后端服务器搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%8C%85%E5%AF%BC%E5%85%A5"><span class="toc-number">4.1.</span> <span class="toc-text">3.1 包导入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-buildSchame"><span class="toc-number">4.2.</span> <span class="toc-text">3.2 buildSchame</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E5%A4%84%E7%90%86%E5%87%BD%E6%95%B0"><span class="toc-number">4.3.</span> <span class="toc-text">3.3 处理函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E6%B5%8B%E8%AF%95"><span class="toc-number">5.</span> <span class="toc-text">4 测试</span></a></li></ol>
+                    </div>
+                
+                <hr />
+                <h1 id="3-使用express和graphQL"><a href="#3-使用express和graphQL" class="headerlink" title="3. 使用express和graphQL"></a>3. 使用express和graphQL</h1><h1 id="1-查询-server-side"><a href="#1-查询-server-side" class="headerlink" title="1 查询 (server-side)"></a>1 查询 (server-side)</h1><p>Query 是一个关键字，代表一个操作类型 (operation type)。 所有查询的方法都必须在这个字段下，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">EXAMPLE</span><br><span class="line">type Query &#123;</span><br><span class="line">	查询方法1: 返回值，</span><br><span class="line">  查询方法2： 返回值，</span><br><span class="line">	....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>返回值如果不是graphql的自带标量类型，那么就需要使用type来定义。</p>
+<h2 id="1-1-自带标量类型"><a href="#1-1-自带标量类型" class="headerlink" title="1.1 自带标量类型"></a>1.1 自带标量类型</h2><p>graphql自带标量类型为: Int, Float, String, Boolean, ID(unique). 那么返回值可以直接填这几个类型。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">EXAMPLE</span><br><span class="line">type Query &#123;</span><br><span class="line">	getCompanyName: String,</span><br><span class="line">	getCompanyEmployeeNum: Int,</span><br><span class="line">	....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-复杂-自定义类型"><a href="#1-2-复杂-自定义类型" class="headerlink" title="1.2 复杂/自定义类型"></a>1.2 复杂/自定义类型</h2><p>如果为自定义类型，需要使用type关键字定义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">type Company&#123;</span><br><span class="line">	name: String,</span><br><span class="line">	location: String,</span><br><span class="line">	employeeNum: Int,</span><br><span class="line">	isOpen: Boolean,</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Query &#123;</span><br><span class="line">	查询方法的返回值为company类型</span><br><span class="line">	getCompanyInfo: Company</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当接收到query请求后，会根据操作名称，也就是查询方法来寻找对应的处理函数。</p>
+<h1 id="2-处理函数"><a href="#2-处理函数" class="headerlink" title="2. 处理函数"></a>2. 处理函数</h1><p>处理方法就是普通的js函数，只不过命名，参数这些地方会有些要求。比如我们上面有一个getCompanyName的Query,返回值类型是company，那么我们的处理函数就可以是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">getCompanyInfo()&#123;</span><br><span class="line">	...数据库交互</span><br><span class="line">	return &#123;</span><br><span class="line">		name: &quot;TestCompany&quot;,</span><br><span class="line">		location: &quot;TestLocation&quot;,</span><br><span class="line">		employeeNum: 1,</span><br><span class="line">		isOpen: true,</span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-后端服务器搭建"><a href="#3-后端服务器搭建" class="headerlink" title="3. 后端服务器搭建"></a>3. 后端服务器搭建</h1><ol>
+<li>express + express-graphql + graphql</li>
+</ol>
+<p>express: 后端服务器</p>
+<p>express-graphql: graphql http server (用来解析， 比如收到一个query，如何根据你的schema来找到对应的函数，然后交给函数处理。</p>
+<p>graphql是构建schema</p>
+<h2 id="3-1-包导入"><a href="#3-1-包导入" class="headerlink" title="3.1 包导入"></a>3.1 包导入</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>); </span><br><span class="line"><span class="keyword">const</span> graphqlHTTP = <span class="built_in">require</span>(<span class="string">&#x27;express-graphql&#x27;</span>); </span><br><span class="line"><span class="keyword">const</span> &#123; buildSchema &#125; = <span class="built_in">require</span>(<span class="string">&#x27;graphql&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>buildSchema用来来构建schema,也就是刚刚写的那些请求,比如 type query{…}, </p>
+<h2 id="3-2-buildSchame"><a href="#3-2-buildSchame" class="headerlink" title="3.2 buildSchame"></a>3.2 buildSchame</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> graphqlHTTP = <span class="built_in">require</span>(<span class="string">&#x27;express-graphql&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> &#123; buildSchema &#125; = <span class="built_in">require</span>(<span class="string">&#x27;graphql&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> schema = buildSchema(<span class="string">`</span></span><br><span class="line"><span class="string">	type Company &#123;</span></span><br><span class="line"><span class="string">			name: String,</span></span><br><span class="line"><span class="string">			location: String,</span></span><br><span class="line"><span class="string">			employeeNum: Int,</span></span><br><span class="line"><span class="string">			isOpen:Boolean,</span></span><br><span class="line"><span class="string">	&#125;</span></span><br><span class="line"><span class="string">	</span></span><br><span class="line"><span class="string">	type Query &#123;</span></span><br><span class="line"><span class="string">		getCompanyName: String</span></span><br><span class="line"><span class="string">		getCompanyInfo: Company	</span></span><br><span class="line"><span class="string">	&#125;</span></span><br><span class="line"><span class="string">`</span>)</span><br></pre></td></tr></table></figure>
+
+<p>那么我们就定义好了，两个查询方法，一个getCompanyName,一个getCompanyInfo.这两个方法的返回值分别为String和Company复杂类型</p>
+<h2 id="3-3-处理函数"><a href="#3-3-处理函数" class="headerlink" title="3.3 处理函数"></a>3.3 处理函数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">const express = require(&#x27;express&#x27;);</span><br><span class="line">const graphqlHTTP = require(&#x27;express-graphql&#x27;);</span><br><span class="line">const &#123; buildSchema &#125; = require(&#x27;graphql&#x27;)</span><br><span class="line"></span><br><span class="line">var schema = buildSchema(`</span><br><span class="line">	type Company &#123;</span><br><span class="line">			name: String,</span><br><span class="line">			location: String,</span><br><span class="line">			employeeNum: Int,</span><br><span class="line">			isOpen:Boolean,</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	type Query &#123;</span><br><span class="line">		getCompanyName: String</span><br><span class="line">		getCompanyInfo: Company	</span><br><span class="line">	&#125;</span><br><span class="line">`)</span><br><span class="line"></span><br><span class="line">var root = &#123;</span><br><span class="line">	getCompanyName: () =&gt; &#123;</span><br><span class="line">		return &quot;TestCompanyName&quot;</span><br><span class="line">	&#125;</span><br><span class="line">	getCompanyInfo: () =&gt; &#123;</span><br><span class="line">		return &#123;</span><br><span class="line">			name: &quot;TestCompany&quot;,</span><br><span class="line">			location: &quot;TestLocation&quot;,</span><br><span class="line">			employeeNum: 1,</span><br><span class="line">			isOpen: true,</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var app = express();</span><br><span class="line"></span><br><span class="line">app.use(&#x27;/graphql&#x27;,</span><br><span class="line">	graphqlHTTP(&#123;</span><br><span class="line">		schema: schema,</span><br><span class="line">		rootValue: root,</span><br><span class="line">		graphiql: true</span><br><span class="line">	&#125;)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">app.listen(4000);</span><br></pre></td></tr></table></figure>
+
+<p>graphqlHTTP这三个参数，schema是接口定义，rootValue是处理函数入口，graphiql是测试界面，如果我们通过location:4000/graphql，就可以访问到测试页面</p>
+<h1 id="4-测试"><a href="#4-测试" class="headerlink" title="4 测试"></a>4 测试</h1><p>在测试页面,  可以用shorthand syntax来查询</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	getCompanyName</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">返回值</span><br><span class="line">&#123;</span><br><span class="line">	&quot;data&quot;:&#123;</span><br><span class="line">		&quot;getCompanyName&quot;: &quot;TestCompanyName&quot;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">getCompanyInfo&#123;</span><br><span class="line">		name</span><br><span class="line">		location</span><br><span class="line">		employeeNum</span><br><span class="line">		isOpen</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">返回值</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;data&quot;: &#123;</span><br><span class="line">    &quot;getCompanyInfo&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;TestCompany&quot;,</span><br><span class="line">      &quot;location&quot;: &quot;TestLocation&quot;,</span><br><span class="line">      &quot;employeeNum&quot;: 1,</span><br><span class="line">      &quot;isOpen&quot;: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+            </div>
+            
+            <footer class="kratos-entry-footer clearfix">
+                
+                <div class="footer-tag clearfix">
+                    <div class="pull-left">
+                    <i class="fa fa-tags"></i>
+                        <a class="tag-none-link" href="/tags/graphQL/" rel="tag">graphQL</a>
+                    </div>
+                    <div class="pull-date">
+                    <span>最后编辑：2021-05-25</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        
+        
+    </article>
+</section>
+
+                
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2021 さくら荘のLeo   版权所有.</li>
+                            <li>this site has been running :<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Leo.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>const notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));</script>
+
+<script async src="/js/candy.min.js"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="3204190542"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
