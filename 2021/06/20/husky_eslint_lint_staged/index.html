@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="images/leo.jpg">
+  <title>husky + eslint + lint-staged 配置方法 | さくら荘のLeo  </title>
+  <meta name="author" content="Leo" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="husky+eslint+lint-staged" />
+  
+  <meta name="description" content="husky + eslint + lint-staged husky: git的一个钩子，用来帮助运行一些指令在特定的git运行阶段，比如提交前. eslint: 用特定的配置来对代码进行风格检查以此来保证代码的一致性和低bugs.  husky: husky-doceslint: eslint-doc####husky的使用 ##1 . install husky npm install -D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="husky + eslint + lint-staged 配置方法">
+<meta property="og:url" content="https://www.yinjia-li.com/2021/06/20/husky_eslint_lint_staged/index.html">
+<meta property="og:site_name" content="さくら荘のLeo  ">
+<meta property="og:description" content="husky + eslint + lint-staged husky: git的一个钩子，用来帮助运行一些指令在特定的git运行阶段，比如提交前. eslint: 用特定的配置来对代码进行风格检查以此来保证代码的一致性和低bugs.  husky: husky-doceslint: eslint-doc####husky的使用 ##1 . install husky npm install -D">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.yinjia-li.com/images/leo.jpg">
+<meta property="article:published_time" content="2021-06-20T10:17:22.000Z">
+<meta property="article:modified_time" content="2021-06-20T11:45:25.564Z">
+<meta property="article:author" content="Leo">
+<meta property="article:tag" content="husky+eslint+lint-staged">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.yinjia-li.com/images/leo.jpg">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/light.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-file"></i>档案馆</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-paw"></i>好伙伴</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>链接</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="https://www.yinjia-li.com">关于我</a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://github.com/DreamingLi">我的github</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">さくら荘のLeo  </a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>さくら荘のLeo  </h2> <br />
+                        <span>啊嘞嘞</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+                        
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/violet_evergarden.jpg" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">一个喜欢二次元的编程菜鸟</p>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#husky-eslint-lint-staged"><span class="toc-text">husky + eslint + lint-staged</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#husky-husky-doc"><span class="toc-text">husky: husky-doc</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#eslint-eslint-doc"><span class="toc-text">eslint: eslint-doc</span></a></li></ol></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/graphQL-basic/">graphQL-basic</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/husky-eslint-lint-staged/">husky+eslint+lint-staged</a><span class="category-list-count">1</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/graphQL/" style="font-size: 0.8em;">graphQL</a> <a href="/tags/husky-eslint-lint-staged/" style="font-size: 0.6em;">husky+eslint+lint-staged</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2021/06/20/husky_eslint_lint_staged/"><i class="fa  fa-book"></i> husky + eslint + lint-staged 配置方法</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/06/17/graphQL%E5%9F%BA%E7%A1%803/"><i class="fa  fa-book"></i> graphQL基础3</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/05/25/graphQL%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> graphQL基础</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/05/25/graphQL%E5%9F%BA%E7%A1%802/"><i class="fa  fa-book"></i> graphQL基础2</a>
+            
+          
+        
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+                    
+
+        <section class="col-md-8">
+    <article>
+        <div class="kratos-hentry kratos-post-inner clearfix">
+            <header class="kratos-entry-header">
+                
+                    <h1 class="kratos-entry-title text-center">husky + eslint + lint-staged 配置方法</h1>
+                
+                
+                <ul class="kratos-post-meta text-center">
+                    <li><i class="fa fa-calendar"></i> 2021-06-20</li>
+                    <li><i class="fa fa-user"></i> 作者 Leo</li>
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~3.79K
+                        
+                        字
+                    </li>
+                    
+                </ul>
+            </header>
+            <div class="kratos-post-content">
+                <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                    本文最后编辑于 <time datetime="1624189525564"></time> 前，其中的内容可能需要更新。
+                </div>
+                
+                    <div class="kratos-post-inner-toc">
+                        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#husky-eslint-lint-staged"><span class="toc-number">1.</span> <span class="toc-text">husky + eslint + lint-staged</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#husky-husky-doc"><span class="toc-number">1.0.1.</span> <span class="toc-text">husky: husky-doc</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#eslint-eslint-doc"><span class="toc-number">1.0.2.</span> <span class="toc-text">eslint: eslint-doc</span></a></li></ol></li></ol></li></ol>
+                    </div>
+                
+                <hr />
+                <h3 id="husky-eslint-lint-staged"><a href="#husky-eslint-lint-staged" class="headerlink" title="husky + eslint + lint-staged"></a>husky + eslint + lint-staged</h3><ul>
+<li>husky: git的一个钩子，用来帮助运行一些指令在特定的git运行阶段，比如提交前.</li>
+<li>eslint: 用特定的配置来对代码进行风格检查以此来保证代码的一致性和低bugs.</li>
+</ul>
+<h5 id="husky-husky-doc"><a href="#husky-husky-doc" class="headerlink" title="husky: husky-doc"></a>husky: <a target="_blank" rel="noopener" href="https://typicode.github.io/husky/#/%22">husky-doc</a></h5><h5 id="eslint-eslint-doc"><a href="#eslint-eslint-doc" class="headerlink" title="eslint: eslint-doc"></a>eslint: <a target="_blank" rel="noopener" href="https://eslint.org/%22">eslint-doc</a></h5><p>####husky的使用</p>
+<p>##1 . install husky</p>
+<p><code>npm install -D husky</code></p>
+<p>先将husky添加到项目的开发依赖中，</p>
+<p>##2 .  inject git hooks</p>
+<p><code>npm set-script prepare &quot;husky install&quot;</code></p>
+<p>npm set-script 是version 7.x才有的指令，所有如果提示没有找到set-script，可以手动在package.json添加prepare脚本. 这个prepare是npm4.0.0引入的新life cycle script，(prepare: 在执行npm的指令时，会根据情况，提前或之后运行预设指令，具体可查看 <a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli/v7/using-npm/scripts#prepare-and-prepublish">https://docs.npmjs.com/cli/v7/using-npm/scripts#prepare-and-prepublish</a>).<br>npm低于7.x, 手动添加prepare脚本:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="string">&quot;scripts&quot;</span>:&#123;</span><br><span class="line">		...</span><br><span class="line">		<span class="string">&quot;prepare&quot;</span>: <span class="string">&quot;husky install&quot;</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>husky install会创建一个.husky目录并指定该目录为git hooks所在目录。<br>这里有两个不同的特殊情况，如果这个.husky需要放到其他文件目录中，比如.config目录中，可以在install后，追加路径</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="string">&quot;scripts&quot;</span>:&#123;</span><br><span class="line">		...</span><br><span class="line">		<span class="string">&quot;prepare&quot;</span>: <span class="string">&quot;husky install .config/husky&quot;</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你的package.json和你的.git目录不在一个目录level，那么执行husky install之前，要先跳转到.git目录，也就是说这个指令必须是在你.git存在的目录下运行. </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="string">&quot;scripts&quot;</span>:&#123;</span><br><span class="line">		...</span><br><span class="line">		<span class="string">&quot;prepare&quot;</span>: <span class="string">&quot;cd .. &amp;&amp; husky install .frontend/husky&quot;</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外所有的钩子，都必须要跳转到package.json所在目录执行，</p>
+<p>##3 .  添加钩子</p>
+<p>钩子都是添加到husky的目录下</p>
+<p><code>npx husky add .husky/pre-commit &quot;npm run test&quot;</code>. </p>
+<p>运行后在.husky目录下会添加也给pre-commit的shell脚本， 这个pre-commit就是会在git提交之前执行 <code>npm run test</code>.</p>
+<p>如果想要测试，可以在shell脚本最后添加 <code>exit 1</code>， 正常配置后，所有的commit都会失败，如果希望在某系特定情况下阻止提交，脚本就必须以非零的退出代码推出.</p>
+<p>可能其他文档会用:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">package.json</span><br><span class="line">&#123;</span><br><span class="line">	<span class="string">&quot;hooks&quot;</span>:&#123;</span><br><span class="line">		<span class="string">&quot;pre-commit&quot;</span>: <span class="string">&quot;npm test &amp;&amp; npm run xxx&quot;</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个是husky v4的写法，而在husky v6中，所有的指令都在脚本中执行，无需定义在package.json.</p>
+<p>##4 . eslint的使用</p>
+<ol>
+<li>安装eslint</li>
+</ol>
+<p><code>npm install eslint --save-dev</code></p>
+<p>安装后，如果已有配置文件，那么配置就基本完成. 如果没有配置文件，那么可以通过 <code>npx eslint --init</code> 来初始化文件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">How would you like to use ESLint?</span><br><span class="line">  To check syntax only</span><br><span class="line">  To check syntax and find problems</span><br><span class="line">  </span><br><span class="line">What type <span class="keyword">of</span> modules does your project use? </span><br><span class="line">  JavaScript modules (<span class="keyword">import</span>/<span class="keyword">export</span>)</span><br><span class="line">  CommonJS (<span class="built_in">require</span>/<span class="built_in">exports</span>)</span><br><span class="line">  None <span class="keyword">of</span> these</span><br><span class="line"></span><br><span class="line">Which framework does your project use?</span><br><span class="line">  React</span><br><span class="line">  Vue.js</span><br><span class="line">  None <span class="keyword">of</span> these</span><br><span class="line"></span><br><span class="line">Does your project use TypeScript? » No / Yes</span><br><span class="line"></span><br><span class="line">Where does your code run? (Press &lt;space&gt; to select, &lt;a&gt; to toggle all, &lt;i&gt; to invert selection)</span><br><span class="line">√ Browser</span><br><span class="line">√ Node</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">? What format <span class="keyword">do</span> you want your config file to be <span class="keyword">in</span>? </span><br><span class="line">  JavaScript</span><br><span class="line">  YAML</span><br><span class="line">  <span class="built_in">JSON</span></span><br><span class="line">  </span><br><span class="line">The config that you<span class="string">&#x27;ve selected requires the following dependencies:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">eslint-plugin-vue@latest @typescript-eslint/eslint-plugin@latest @typescript-eslint/parser@latest</span></span><br><span class="line"><span class="string">? Would you like to install them now with npm?  No / Yes</span></span><br></pre></td></tr></table></figure>
+<p>在这之后，目录下会生成一个.eslintrc.js或yml或json文件，该文件就是eslint的配置文件.  在extends中会有一句<code>eslint: recommanded</code>，在eslint 1.0 version 之后所有的rules都会关闭，通用的一些规则会通过eslint: recommanded打开， 如果不想要那些通用的规则，则可删除此行，可如果想要查看具体有哪些规则打开，可通过  <a target="_blank" rel="noopener" href="https://eslint.org/docs/rules/">打开的规则</a>查看.</p>
+<p>如果想要直接使用eslint校验某个文件的代码，则可通过<code>npm eslint files.js</code><br>如果想要直接使用eslint校验一个目录下的所有文件，则可通过现在package.json中添加</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">		...</span><br><span class="line">		<span class="string">&quot;lint&quot;</span>: <span class="string">&quot;eslint dir&quot;</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在执行 <code>npm run lint</code></p>
+<p>##5 . husky + eslint + lint-staged 结合</p>
+<p>lint-staged: 如果每次都lint所有的文件会运行极慢，那么如果每次只lint要提交的文件，那么速度就可以极快。 lint-staged可以让我们运行一些指令在git add之后的文件上。</p>
+<p>安装 <code>npm install lint-staged</code></p>
+<p>安装后需要配置lint-staged的配置文件，配置主要有两种方式，第一种是在package.json文件中配置</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="string">&quot;lint-staged&quot;</span>: &#123;</span><br><span class="line">		<span class="string">&quot;xxx&quot;</span>: <span class="string">&quot;xxxxxxxx&quot;</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第二种方法是配置一个.lintstagedrc文件<br>.lintstagedrc</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="string">&quot;xxx&quot;</span>: <span class="string">&quot;xxxxxxxxx&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>配置文件中主要是配置filter，比如对于git add之后的js和ts的暂存文件进行lint，那么配置方法为<br>.lintstagedrc</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="string">&quot;*.&#123;js.ts&#125;&quot;</span>: [</span><br><span class="line">		<span class="string">&quot;eslint --fix&quot;</span>,</span><br><span class="line">		<span class="string">&quot;git add&quot;</span></span><br><span class="line">	]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>package.json</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;lint-staged&quot;</span>: &#123;</span><br><span class="line">	<span class="string">&quot;*.&#123;js,ts&#125;&quot;</span>: [</span><br><span class="line">		<span class="string">&quot;eslint --fix&quot;</span>,</span><br><span class="line">		<span class="string">&quot;git add&quot;</span></span><br><span class="line">	]</span><br></pre></td></tr></table></figure>
+<p>中括号是对于以js和ts结尾的文件执行的指令，eslint –fix是通过刚刚eslint的配置对文件进行校验，如果有可以进行修复的，则进行修复，如果不能则抛出错误.</p>
+
+            </div>
+            
+            <footer class="kratos-entry-footer clearfix">
+                
+                <div class="footer-tag clearfix">
+                    <div class="pull-left">
+                    <i class="fa fa-tags"></i>
+                        <a class="tag-none-link" href="/tags/husky-eslint-lint-staged/" rel="tag">husky+eslint+lint-staged</a>
+                    </div>
+                    <div class="pull-date">
+                    <span>最后编辑：2021-06-20</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        
+            <nav class="navigation post-navigation clearfix" role="navigation">
+                
+                <div class="nav-previous clearfix">
+                    <a title=" graphQL基础3" href="/2021/06/17/graphQL基础3/">&lt; 上一篇</a>
+                </div>
+                
+                
+            </nav>
+        
+        
+    </article>
+</section>
+
+                
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2021 さくら荘のLeo   版权所有.</li>
+                            <li>this site has been running :<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Leo.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>const notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));</script>
+
+<script async src="/js/candy.min.js"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="3204190542"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
