@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="images/leo.jpg">
+  <title>Promise基礎 | さくら荘のLeo  </title>
+  <meta name="author" content="Leo" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Promise" />
+  
+  <meta name="description" content="Promisepromise一直用，今天把之前的筆記扔上來 1 promise基本結構1234567new Promise( (resolve, reject) &#x3D; &gt;&amp;#123;	resolve(), 將promise的狀態設置爲成功	reject(), 將promise的狀態設置爲失敗&amp;#125;).then(	() &#x3D;&gt; &amp;#123;&amp;#125;, 成功調用第一個	() &#x3D;&amp;gt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Promise基礎">
+<meta property="og:url" content="https://www.yinjia-li.com/2021/06/27/promise%E5%9F%BA%E7%A4%8E1/index.html">
+<meta property="og:site_name" content="さくら荘のLeo  ">
+<meta property="og:description" content="Promisepromise一直用，今天把之前的筆記扔上來 1 promise基本結構1234567new Promise( (resolve, reject) &#x3D; &gt;&amp;#123;	resolve(), 將promise的狀態設置爲成功	reject(), 將promise的狀態設置爲失敗&amp;#125;).then(	() &#x3D;&gt; &amp;#123;&amp;#125;, 成功調用第一個	() &#x3D;&amp;gt">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.yinjia-li.com/images/leo.jpg">
+<meta property="article:published_time" content="2021-06-27T11:36:40.000Z">
+<meta property="article:modified_time" content="2021-06-27T10:46:20.356Z">
+<meta property="article:author" content="Leo">
+<meta property="article:tag" content="Promise">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.yinjia-li.com/images/leo.jpg">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/light.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-file"></i>档案馆</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-paw"></i>好伙伴</a></li>
+                                    
+                                
+                                    
+                                        <li>
+                                            <a><i class="fa fa-link"></i>链接</a>
+                                            <ul class="sub-menu">
+                                                
+                                                    
+                                                
+                                                    
+                                                        <li><a href="https://www.yinjia-li.com">关于我</a></li>
+                                                    
+                                                
+                                                    
+                                                        <li><a target="_blank" rel="noopener" href="https://github.com/DreamingLi">我的github</a></li>
+                                                    
+                                                
+                                            </ul>
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">さくら荘のLeo  </a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>さくら荘のLeo  </h2> <br />
+                        <span>啊嘞嘞</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+                        
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/violet_evergarden.jpg" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">一个喜欢二次元的编程菜鸟</p>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Promise"><span class="toc-text">Promise</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-promise%E5%9F%BA%E6%9C%AC%E7%B5%90%E6%A7%8B"><span class="toc-text">1 promise基本結構</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-promise%E5%82%B3%E5%8F%83"><span class="toc-text">2. promise傳參</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-promise%E7%9A%84%E6%87%89%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">3.  promise的應用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-util-promisify%E6%96%B9%E6%B3%95"><span class="toc-text">4. util.promisify方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-promise%E5%B0%81%E8%A3%9D"><span class="toc-text">5. promise封裝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-promise%E5%B0%8D%E8%B1%A1%E5%B1%AC%E6%80%A7"><span class="toc-text">6. promise對象屬性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-PromiseState"><span class="toc-text">6.1 PromiseState</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-PromiseResult"><span class="toc-text">6.2 PromiseResult</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-promise%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-text">7 promise的工作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-promise%E7%9A%84API"><span class="toc-text">8. promise的API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-promise%E7%9A%84%E6%A7%8B%E9%80%A0"><span class="toc-text">1. promise的構造</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-promise-prototype-then"><span class="toc-text">2. promise.prototype.then</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-promise-prototype-catch"><span class="toc-text">3. promise.prototype.catch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-Promise-resolve-Promise-reject-Promise-all-Promise-race"><span class="toc-text">9 Promise.resolve, Promise.reject, Promise.all, Promise.race</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#9-1-Promise-resolve"><span class="toc-text">9.1 Promise.resolve</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-2-Promise-reject"><span class="toc-text">9.2 Promise.reject</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-3-Promise-all"><span class="toc-text">9.3 Promise.all</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-4-Promise-race-%E5%A4%9A%E5%80%8Bpromsie%E7%9A%84%E6%95%B8%E7%B5%84"><span class="toc-text">9.4 Promise.race ( 多個promsie的數組)</span></a></li></ol></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Promise-basic/">Promise-basic</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/graphQL-basic/">graphQL-basic</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/husky-eslint-lint-staged/">husky+eslint+lint-staged</a><span class="category-list-count">1</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/Promise/" style="font-size: 0.6em;">Promise</a> <a href="/tags/graphQL/" style="font-size: 0.8em;">graphQL</a> <a href="/tags/husky-eslint-lint-staged/" style="font-size: 0.6em;">husky+eslint+lint-staged</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2021/06/27/promise%E5%9F%BA%E7%A4%8E1/"><i class="fa  fa-book"></i> Promise基礎</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/06/20/husky_eslint_lint_staged/"><i class="fa  fa-book"></i> husky + eslint + lint-staged 配置方法</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/06/17/graphQL%E5%9F%BA%E7%A1%803/"><i class="fa  fa-book"></i> graphQL基础3</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/05/25/graphQL%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> graphQL基础</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/05/25/graphQL%E5%9F%BA%E7%A1%802/"><i class="fa  fa-book"></i> graphQL基础2</a>
+            
+          
+        
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+                    
+
+        <section class="col-md-8">
+    <article>
+        <div class="kratos-hentry kratos-post-inner clearfix">
+            <header class="kratos-entry-header">
+                
+                    <h1 class="kratos-entry-title text-center">Promise基礎</h1>
+                
+                
+                <ul class="kratos-post-meta text-center">
+                    <li><i class="fa fa-calendar"></i> 2021-06-27</li>
+                    <li><i class="fa fa-user"></i> 作者 Leo</li>
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~5.30K
+                        
+                        字
+                    </li>
+                    
+                </ul>
+            </header>
+            <div class="kratos-post-content">
+                <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                    本文最后编辑于 <time datetime="1624790780356"></time> 前，其中的内容可能需要更新。
+                </div>
+                
+                    <div class="kratos-post-inner-toc">
+                        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Promise"><span class="toc-number">1.</span> <span class="toc-text">Promise</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-promise%E5%9F%BA%E6%9C%AC%E7%B5%90%E6%A7%8B"><span class="toc-number">1.1.</span> <span class="toc-text">1 promise基本結構</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-promise%E5%82%B3%E5%8F%83"><span class="toc-number">1.2.</span> <span class="toc-text">2. promise傳參</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-promise%E7%9A%84%E6%87%89%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">3.  promise的應用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-util-promisify%E6%96%B9%E6%B3%95"><span class="toc-number">1.4.</span> <span class="toc-text">4. util.promisify方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-promise%E5%B0%81%E8%A3%9D"><span class="toc-number">1.5.</span> <span class="toc-text">5. promise封裝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-promise%E5%B0%8D%E8%B1%A1%E5%B1%AC%E6%80%A7"><span class="toc-number">1.6.</span> <span class="toc-text">6. promise對象屬性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-PromiseState"><span class="toc-number">1.6.1.</span> <span class="toc-text">6.1 PromiseState</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-PromiseResult"><span class="toc-number">1.6.2.</span> <span class="toc-text">6.2 PromiseResult</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-promise%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">1.7.</span> <span class="toc-text">7 promise的工作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-promise%E7%9A%84API"><span class="toc-number">1.8.</span> <span class="toc-text">8. promise的API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-promise%E7%9A%84%E6%A7%8B%E9%80%A0"><span class="toc-number">1.8.1.</span> <span class="toc-text">1. promise的構造</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-promise-prototype-then"><span class="toc-number">1.8.2.</span> <span class="toc-text">2. promise.prototype.then</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-promise-prototype-catch"><span class="toc-number">1.8.3.</span> <span class="toc-text">3. promise.prototype.catch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-Promise-resolve-Promise-reject-Promise-all-Promise-race"><span class="toc-number">1.9.</span> <span class="toc-text">9 Promise.resolve, Promise.reject, Promise.all, Promise.race</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#9-1-Promise-resolve"><span class="toc-number">1.9.1.</span> <span class="toc-text">9.1 Promise.resolve</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-2-Promise-reject"><span class="toc-number">1.9.2.</span> <span class="toc-text">9.2 Promise.reject</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-3-Promise-all"><span class="toc-number">1.9.3.</span> <span class="toc-text">9.3 Promise.all</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-4-Promise-race-%E5%A4%9A%E5%80%8Bpromsie%E7%9A%84%E6%95%B8%E7%B5%84"><span class="toc-number">1.9.4.</span> <span class="toc-text">9.4 Promise.race ( 多個promsie的數組)</span></a></li></ol></li></ol></li></ol>
+                    </div>
+                
+                <hr />
+                <h1 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h1><p>promise一直用，今天把之前的筆記扔上來</p>
+<h2 id="1-promise基本結構"><a href="#1-promise基本結構" class="headerlink" title="1 promise基本結構"></a>1 promise基本結構</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>( (resolve, reject) = &gt;&#123;</span><br><span class="line">	resolve(), 將promise的狀態設置爲成功</span><br><span class="line">	reject(), 將promise的狀態設置爲失敗</span><br><span class="line">&#125;).then(</span><br><span class="line">	<span class="function">() =&gt;</span> &#123;&#125;, 成功調用第一個</span><br><span class="line">	() =&gt; &#123;&#125; 失敗調用第二個</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>( <span class="function">(<span class="params">resolve,reject </span>) =&gt;</span> &#123;</span><br><span class="line">	resolve (),</span><br><span class="line">	reject()</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">promise.then(</span><br><span class="line">	<span class="function">() =&gt;</span> &#123;&#125;,</span><br><span class="line">	<span class="function">() =&gt;</span> &#123;&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-promise傳參"><a href="#2-promise傳參" class="headerlink" title="2. promise傳參"></a>2. promise傳參</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">	resolve(<span class="number">1</span>),</span><br><span class="line">	reject(<span class="number">2</span>),</span><br><span class="line">).then(</span><br><span class="line">	<span class="function"><span class="params">param</span> =&gt;</span> &#123; param<span class="comment">//1&#125;,</span></span><br><span class="line">	param =&gt; &#123; param<span class="comment">//2&#125;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>( <span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">	resolve(<span class="number">1</span>),</span><br><span class="line">	reject(<span class="number">2</span>),</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">promise.then(</span><br><span class="line">	<span class="function"><span class="params">param</span> =&gt;</span> &#123;param<span class="comment">//1&#125;</span></span><br><span class="line">	param =&gt; &#123;param<span class="comment">//2&#125;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-promise的應用方法"><a href="#3-promise的應用方法" class="headerlink" title="3.  promise的應用方法"></a>3.  promise的應用方法</h2><p>想要一個函數變爲異步操作，那麽最簡單的方法就是用promise將他包裹</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">非promise</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line">fs.readFile(<span class="string">&#x27;./resource/content.txt&#x27;</span>, <span class="function">(<span class="params">err, data</span>) =&gt;</span> &#123;</span><br><span class="line">	<span class="keyword">if</span>(err) <span class="keyword">throw</span> err;</span><br><span class="line">	<span class="built_in">console</span>.log(data)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">promise的方法</span><br><span class="line"><span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>( <span class="function">(<span class="params">resolve, reject </span>) =&gt;</span> &#123;</span><br><span class="line">	fs.readFile(<span class="string">&#x27;./resource/content.txt&#x27;</span>, <span class="function">(<span class="params">err,data</span>) =&gt;</span> &#123;</span><br><span class="line">		<span class="keyword">if</span>(err) reject(err)</span><br><span class="line">		resolve(data)</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">promise.then(</span><br><span class="line">	<span class="function"><span class="params">data</span> =&gt;</span> &#123; <span class="built_in">console</span>.log(data.toString())&#125;,</span><br><span class="line">	<span class="function"><span class="params">err</span> =&gt;</span> &#123; <span class="built_in">console</span>.log(err.toString()) &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-util-promisify方法"><a href="#4-util-promisify方法" class="headerlink" title="4. util.promisify方法"></a>4. util.promisify方法</h2><p>可以傳入一個遵頊常見的錯誤優先的回調風格的函數，(err, value) ⇒ … 回調作爲最後一個參數，返回一個pormise的版本</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> util = <span class="built_in">require</span>(<span class="string">&#x27;util&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> mineReadFile = util.promisify(fs.readFile)</span><br><span class="line">mineReadFile(<span class="string">&#x27;./resource/content.txt&#x27;</span>).then( <span class="function"><span class="params">value</span>=&gt;</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(value.toString())</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-promise封裝"><a href="#5-promise封裝" class="headerlink" title="5. promise封裝"></a>5. promise封裝</h2><p>之前都是new一個promise，new的時候，這個promise就已經運行了，那麽如果想要在需要運行promise的時候再運行，就需要封裝，把promise放到一個方法中,之後將promise對象返回即可</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">xxx</span>(<span class="params">param1,param2...</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>) =&gt;</span> &#123;</span><br><span class="line">		....		</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">return</span> promise</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">=</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">xxx</span>(<span class="params">param1,param2...</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(</span><br><span class="line">		<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">			...</span><br><span class="line">		&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> result = xxxx(param1,param2...)</span><br><span class="line">result.then(</span><br><span class="line">	<span class="function"><span class="params">ret</span> =&gt;</span> &#123;<span class="built_in">console</span>.log(ret)&#125;,</span><br><span class="line">	<span class="function"><span class="params">err</span> =&gt;</span> &#123;<span class="built_in">console</span>.log(err)&#125; </span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">xxx(param1,param2...).then(</span><br><span class="line">   <span class="function"><span class="params">ret</span> =&gt;</span> &#123;&#125;,</span><br><span class="line">	 <span class="function"><span class="params">err</span> =&gt;</span> &#123;&#125;,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-promise對象屬性"><a href="#6-promise對象屬性" class="headerlink" title="6. promise對象屬性"></a>6. promise對象屬性</h2><h3 id="6-1-PromiseState"><a href="#6-1-PromiseState" class="headerlink" title="6.1 PromiseState"></a>6.1 PromiseState</h3><p>promise實例對象中有一個屬性叫PromiseState, 這個PromiseState有<strong>三個狀態</strong></p>
+<ul>
+<li>pending</li>
+<li>resolved</li>
+<li>rejected</li>
+</ul>
+<p>這個狀態<strong>只能改變一次</strong>，也就是説從pending ⇒ resolved之後不可再從 resolved ⇒ rejected</p>
+<h3 id="6-2-PromiseResult"><a href="#6-2-PromiseResult" class="headerlink" title="6.2 PromiseResult"></a>6.2 PromiseResult</h3><p>實例對象中的另一個值就是PromiseResult,它保存著<strong>異步任務執行成功</strong>或者<strong>失敗</strong>的<strong>結果</strong>, 可以修改這個值得方法，只有兩個：</p>
+<ul>
+<li>resolve</li>
+<li>reject</li>
+</ul>
+<p>儅我們通過then方法進行回調的時候，那麽這個值就會被取出來，並傳遞給適當的處理函數來進行處理</p>
+<h2 id="7-promise的工作流程"><a href="#7-promise的工作流程" class="headerlink" title="7 promise的工作流程"></a>7 promise的工作流程</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>() pending state ⇒  執行 resolve or rejected</span><br><span class="line">		<span class="keyword">if</span> resolve: promise的狀態變爲resolved狀態</span><br><span class="line">				then 執行onResolved()</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> rejected: promise的狀態變爲rejected狀態</span><br><span class="line">				then 執行onRejected()</span><br><span class="line">		<span class="keyword">return</span> 新的promise對象</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-promise的API"><a href="#8-promise的API" class="headerlink" title="8. promise的API"></a>8. promise的API</h2><h3 id="1-promise的構造"><a href="#1-promise的構造" class="headerlink" title="1. promise的構造"></a>1. promise的構造</h3><p>promise接受一個executor函數，而executor函數接受兩個參數，一個resolve函數，一個reject函數。</p>
+<p>這個executor函數是同步函數，也就是說代碼執行到new Promise的時候，這個executor會立刻執行。</p>
+<h3 id="2-promise-prototype-then"><a href="#2-promise-prototype-then" class="headerlink" title="2. promise.prototype.then"></a>2. promise.prototype.then</h3><p>接受兩個函數, onResolved, onRejected</p>
+<ol>
+<li>onResolved函數： 成功的回調函數</li>
+<li>onRejected函數： 失敗的回調函數</li>
+</ol>
+<p>返回是一個新的promise對象</p>
+<h3 id="3-promise-prototype-catch"><a href="#3-promise-prototype-catch" class="headerlink" title="3. promise.prototype.catch"></a>3. promise.prototype.catch</h3><p>接受一個函數， onRejected</p>
+<p>狀態為reject時，catch就可以用來處理rejected的狀態</p>
+<h2 id="9-Promise-resolve-Promise-reject-Promise-all-Promise-race"><a href="#9-Promise-resolve-Promise-reject-Promise-all-Promise-race" class="headerlink" title="9 Promise.resolve, Promise.reject, Promise.all, Promise.race"></a>9 Promise.resolve, Promise.reject, Promise.all, Promise.race</h2><h3 id="9-1-Promise-resolve"><a href="#9-1-Promise-resolve" class="headerlink" title="9.1 Promise.resolve"></a>9.1 Promise.resolve</h3><p>這個是Promise函數的方法，此方法可以快速得到一個promise的對象</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 參數為非promise的對象</span><br><span class="line"><span class="keyword">const</span> promise = <span class="built_in">Promise</span>.resolve(param1..) 返回時一個成功的promise對象</span><br><span class="line"><span class="number">2.</span> 參數為promise的對象</span><br><span class="line"><span class="keyword">const</span> promise = <span class="built_in">Promise</span>.resolve(<span class="keyword">new</span> <span class="built_in">Promise</span>(resolve,reject) =&gt; &#123;</span><br><span class="line">	resolve(<span class="string">&#x27;ok&#x27;</span>),</span><br><span class="line">	reject(<span class="string">&#x27;error&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line">promise的promiseResult的值為 ok | error, 但如果reject了, 并且麽有處理它的函數，那麽</span><br><span class="line">就會抛出錯誤，此時可以</span><br><span class="line">promise.catch( <span class="function"><span class="params">err</span> =&gt;</span> &#123;&#125; )</span><br></pre></td></tr></table></figure>
+
+<p>如果傳入的參數是非promise類的對象，那麽返回結果為成功的promise的對象</p>
+<p>如果傳入的是一個promise的對象，那麽他的結果就是内部這個promise對象的結果</p>
+<h3 id="9-2-Promise-reject"><a href="#9-2-Promise-reject" class="headerlink" title="9.2 Promise.reject"></a>9.2 Promise.reject</h3><p>這個函數的返回值永遠都是reject,即使我們傳入一個成功的promise對象，那麽結果是一個promise對象，但是state是rejected</p>
+<h3 id="9-3-Promise-all"><a href="#9-3-Promise-all" class="headerlink" title="9.3 Promise.all"></a>9.3 Promise.all</h3><p>這個參數是一個promise組成的數組， 返回對象是一個promsie對象，那麽這個狀態是由數組中的promise的狀態決定的</p>
+<p>如果 數組中所有的promise都成功，那麽結果就是所有這些成功的promise的結果，</p>
+<p>如果 數組中有一個promise失敗了，那麽結果就是失敗的promise的結果，</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">成功</span><br><span class="line"><span class="keyword">const</span> p1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(</span><br><span class="line">	<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">		resolve(<span class="string">&#x27;p1 ok&#x27;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">const</span> p2 = <span class="keyword">new</span> <span class="built_in">Promise</span>(</span><br><span class="line">	<span class="function">(<span class="params">resolve,reject</span>) =&gt;</span> &#123;</span><br><span class="line">		resolve(<span class="string">&#x27;p2 ok&#x27;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">const</span> p3 = <span class="keyword">new</span> <span class="built_in">Promise</span>(</span><br><span class="line">	<span class="function">(<span class="params">resolve,reject</span>) =&gt;</span> &#123;</span><br><span class="line">		resolve(<span class="string">&#x27;p3 ok&#x27;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> promiseResult = <span class="built_in">Promise</span>.all([p1,p2,p3])</span><br><span class="line"></span><br><span class="line">promiseResult </span><br><span class="line">	- PromiseState: fulfilled</span><br><span class="line">	- PromiseResult: <span class="built_in">Array</span>(<span class="number">3</span>)</span><br><span class="line">		- <span class="number">0</span>: <span class="string">&quot;p1 ok&quot;</span></span><br><span class="line">		- <span class="number">1</span>: <span class="string">&quot;p2 ok&quot;</span></span><br><span class="line">		- <span class="number">2</span>: <span class="string">&quot;p3 ok&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">失敗</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> p1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(</span><br><span class="line">	<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">		resolve(<span class="string">&#x27;p1 ok&#x27;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">const</span> p2 = <span class="keyword">new</span> <span class="built_in">Promise</span>(</span><br><span class="line">	<span class="function">(<span class="params">resolve,reject</span>) =&gt;</span> &#123;</span><br><span class="line">		reject(<span class="string">&#x27;p2 err&#x27;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">const</span> p3 = <span class="keyword">new</span> <span class="built_in">Promise</span>(</span><br><span class="line">	<span class="function">(<span class="params">resolve,reject</span>) =&gt;</span> &#123;</span><br><span class="line">		resolve(<span class="string">&#x27;p3 ok&#x27;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> promiseResult = <span class="built_in">Promise</span>.all([p1,p2,p3])</span><br><span class="line"></span><br><span class="line">promiseResult </span><br><span class="line">	- PromiseState: rejected</span><br><span class="line">	- PromiseResult: <span class="string">&#x27;error&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="9-4-Promise-race-多個promsie的數組"><a href="#9-4-Promise-race-多個promsie的數組" class="headerlink" title="9.4 Promise.race ( 多個promsie的數組)"></a>9.4 Promise.race ( 多個promsie的數組)</h3><p>第一個改變狀態的promise，就是他的最終的結果狀態，或者説是返回結果</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> p1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(</span><br><span class="line">	<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">		resolve(<span class="string">&#x27;p1 ok&#x27;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">const</span> p2 = <span class="keyword">new</span> <span class="built_in">Promise</span>(</span><br><span class="line">	<span class="function">(<span class="params">resolve,reject</span>) =&gt;</span> &#123;</span><br><span class="line">		reject(<span class="string">&#x27;p2 err&#x27;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">const</span> p3 = <span class="keyword">new</span> <span class="built_in">Promise</span>(</span><br><span class="line">	<span class="function">(<span class="params">resolve,reject</span>) =&gt;</span> &#123;</span><br><span class="line">		resolve(<span class="string">&#x27;p3 ok&#x27;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> promiseResult = <span class="built_in">Promise</span>.race([p1,p2,p3])</span><br><span class="line"></span><br><span class="line">promiseResult</span><br><span class="line">	- PromiseState: fulfilled</span><br><span class="line">	- PromiseResult: p1 ok</span><br></pre></td></tr></table></figure>
+            </div>
+            
+            <footer class="kratos-entry-footer clearfix">
+                
+                <div class="footer-tag clearfix">
+                    <div class="pull-left">
+                    <i class="fa fa-tags"></i>
+                        <a class="tag-none-link" href="/tags/Promise/" rel="tag">Promise</a>
+                    </div>
+                    <div class="pull-date">
+                    <span>最后编辑：2021-06-27</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        
+            <nav class="navigation post-navigation clearfix" role="navigation">
+                
+                <div class="nav-previous clearfix">
+                    <a title=" husky + eslint + lint-staged 配置方法" href="/2021/06/20/husky_eslint_lint_staged/">&lt; 上一篇</a>
+                </div>
+                
+                
+            </nav>
+        
+        
+    </article>
+</section>
+
+                
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2021 さくら荘のLeo   版权所有.</li>
+                            <li>this site has been running :<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Leo.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>const notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));</script>
+
+<script async src="/js/candy.min.js"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="3204190542"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
